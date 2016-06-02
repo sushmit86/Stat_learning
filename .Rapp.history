@@ -1,5 +1,0 @@
-fix
-Auto=read.table("Data/Auto.data")
-setwd("~/Stat_learning")
-Auto=read.table("Data/Auto.data")
-fix(Auto)
