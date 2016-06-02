@@ -64,3 +64,4 @@ Data/
 .DS_Store
 .RData
 .Rhistory
+.Rapp.history
