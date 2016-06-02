@@ -61,4 +61,4 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 Data/
-.DS_Store/
+.DS_Store
