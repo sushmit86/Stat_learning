@@ -62,3 +62,5 @@ target/
 .ipynb_checkpoints
 Data/
 .DS_Store
+.RData
+.Rhistory
