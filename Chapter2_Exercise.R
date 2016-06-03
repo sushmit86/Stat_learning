@@ -34,3 +34,23 @@ plot(college$Accept / college$Apps, college$S.F.Ratio)
 plot(college$Top10perc, college$Grad.Rate)
 # Colleges with the most students from top 10% perc don't necessarily have
 # the highest graduation rate. Also, rate > 100 is erroneous!
+library(MASS)
+
+
+# 9.
+Auto = read.csv("Data/Auto.csv", header=T, na.strings="?")
+View(Auto)
+Auto = na.omit(Auto)
+dim(Auto)
+summary(Auto)
+sapply(Auto[, 1:7], range)
+sapply(Auto[, 1:7], mean)
+sapply(Auto[, 1:7], sd)
+
+newAuto = Auto[-(10:85),]
+dim(newAuto) == dim(Auto) - c(76,0)
+newAuto[9,] == Auto[9,]
+newAuto[10,] == Auto[86,]
+
+sapply(newAuto[, 1:7], range)
+sapply(newAuto[, 1:7], mean)
