@@ -48,7 +48,7 @@ vif(lm.fit)
 lm.fit1=lm(medv~.-age,data=Boston)
 summary(lm.fit1)
 lm.fit1=update(lm.fit, ~.-age)
-
+summary(lm.fit1)
 # Interaction Terms
 
 summary(lm(medv~lstat*age,data=Boston))
@@ -67,7 +67,7 @@ summary(lm(medv~log(rm),data=Boston))
 
 # Qualitative Predictors
 
-fix(Carseats)
+View(Carseats)
 names(Carseats)
 lm.fit=lm(Sales~.+Income:Advertising+Price:Age,data=Carseats)
 summary(lm.fit)
