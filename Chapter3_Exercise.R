@@ -31,5 +31,81 @@ par(mfrow=c(1,1))
 pairs(Auto)
 names(Auto)
 cor(subset(Auto, select = -name))
+lm.fit1 = lm(mpg~.-name, data=Auto)
+summary(lm.fit1)
+# i.
+# Yes, there is a relatioship between the
+#predictors and the response by testing the null hypothesis of 
+#whether all the regression coefficients are zero. The F -statistic is far from 1 (with a small p-value), indicating evidence against the null hypothesis.
+# 
+# ii.
+# Looking at the p-values associated with each predictor’s 
+#t-statistic, we see that displacement, weight, year, and origin 
+#have a statistically significant relationship, while cylinders, horsepower, and acceleration do not.
+# 
+par(mfrow=c(2,2))
+plot(lm.fit1)
+plot(predict(lm.fit1), residuals(lm.fit1))
+plot(predict(lm.fit1), rstudent(lm.fit1)) 
+# Lot of possible outliers
+
+lm.fit2 = lm(mpg ~ displacement + horsepower * displacement)
+summary(lm.fit2)
+
+lm.fit3 = lm(mpg~log(weight)+sqrt(horsepower)+acceleration+I(acceleration^2))
+summary(lm.fit3)
+par(mfrow = c(2,2))
+plot(lm.fit3)
+par(mfrow = c(1,1))
+plot(predict(lm.fit3), rstudent(lm.fit3))
+
+
+lm.fit3 = lm(log(mpg)~log(weight)+log(horsepower)+ log(acceleration) + log(weight))
+summary(lm.fit3)
+par(mfrow = c(2,2))
+
+plot(lm.fit3)
+
+plot(hatvalues(lm.fit3))
+which.max(hatvalues(lm.fit3))
+
+
+lm.fit4 = lm(log(mpg)~log(weight)+sqrt(horsepower)+acceleration+I(acceleration^2))
+summary(lm.fit4)
+par(mfrow = c(2,2))
+plot(lm.fit4)
+par(mfrow = c(1,1))
+plot(predict(lm.fit4), rstudent(lm.fit4))
+
+# log model follows a good regression model
+
+# Exercise 10
+
+summary(Carseats)
+attach(Carseats)
+lm.fit = lm(Sales~ Price + Urban + US)
+summary(lm.fit)
+# price is significant
+# UrbanYes is not significant
+# US yes is significant
+# R^2 is very less
+
+# Exercise 10 (e)
+lm.fit2 = lm(Sales ~ Price + US)
+summary(lm.fit2)
+# Still R^2 is very less
+confint(lm.fit2)
+par(mfrow = c(2,2))
+plot(lm.fit2)
+plot(predict(lm.fit2), rstudent(lm.fit2))
+
+
+
+
+
+
+
+
+
 
 
