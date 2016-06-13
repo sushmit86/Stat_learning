@@ -99,7 +99,21 @@ par(mfrow = c(2,2))
 plot(lm.fit2)
 plot(predict(lm.fit2), rstudent(lm.fit2))
 
-
+# Exercise 11 (a)
+set.seed(1)
+x = rnorm(100)
+y = 2 *x + rnorm(100)
+lm.fit = lm(y~x + 0)
+summary(lm.fit)
+par(mfrow = c(2,2))
+plot(lm.fit)
+# Exercise 11 (b)
+lm.fit2 = lm(x~y + 0)
+summary(lm.fit2)
+coef(lm.fit2)
+# 11 (c)
+# the t stat are same
+names(lm.fit2)
 
 
 
