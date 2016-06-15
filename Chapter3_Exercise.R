@@ -260,3 +260,11 @@ summary(lm.fit2)
 
 # 14(f) --> No 
 
+# 14(e)
+x1 = c( x1 , 0.1)
+x2 = c(x2, 0.8)
+y = c(y,6)
+lm.fit = lm(y ~ x1 + x2)
+summary(lm.fit)
+
+
