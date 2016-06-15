@@ -148,5 +148,115 @@ coef(lm.fit2)
 # we can see they have the same coefficient
 
 # Exerccise 13(a)
+set.seed(1)
 
+x = rnorm(100)
+eps = rnorm(100, sd =0.25)
+
+# 13(c)
+y = -1 + 0.5 *x + eps
+# beta_0 = -1 , beta_1 = 0.5
+
+# Exercise 13(d)
+par(mfrow = c(1,1))
+plot(x,y)  # Linear relationship
+
+lm.fit = lm( y ~x)
+summary(lm.fit)
+coef(lm.fit)
+
+# (Intercept)           x 
+# -1.0094232   0.4997349 
+
+plot(x,y)  
+abline(lm.fit,lwd=3)
+abline(lm.fit,lwd=3,col="red")
+abline(-1, 0.5, lwd=3, col="green")
+legend(-1, legend = c("model fit", "pop. regression"), col=2:3, lwd=3)
+
+lm.fit_sq = lm( y~x + I(x^2))
+summary(lm.fit_sq) # More R squared p value suggests no relationship
+
+# Repat with less variance
+
+# 13(h)
+set.seed(1)
+x = rnorm(100)
+eps = rnorm(100, sd =0.05)
+y = -1 + 0.5 *x + eps
+# beta_0 = -1 , beta_1 = 0.5
+par(mfrow = c(1,1))
+plot(x,y)  # Linear relationship
+
+lm.fit1 = lm( y ~x)
+summary(lm.fit1)
+coef(lm.fit1)
+
+# (Intercept)           x 
+# -1.0094232   0.4997349 
+
+plot(x,y)  
+abline(lm.fit1,lwd=3)
+abline(lm.fit1,lwd=3,col="red")
+abline(-1, 0.5, lwd=3, col="green")
+legend(-1, legend = c("model fit", "pop. regression"), col=2:3, lwd=3)
+
+
+
+
+
+
+
+# 13(i)
+set.seed(1)
+x = rnorm(100)
+eps = rnorm(100, sd =0.5)
+y = -1 + 0.5 *x + eps
+# beta_0 = -1 , beta_1 = 0.5
+par(mfrow = c(1,1))
+plot(x,y)  # Linear relationship
+
+lm.fit2 = lm( y ~x)
+summary(lm.fit2)
+coef(lm.fit2)
+
+# (Intercept)           x 
+# -1.0094232   0.4997349 
+
+plot(x,y)  
+abline(lm.fit1,lwd=3)
+abline(lm.fit1,lwd=3,col="red")
+abline(-1, 0.5, lwd=3, col="green")
+legend(-1, legend = c("model fit", "pop. regression"), col=2:3, lwd=3)
+
+# clearly R squared decreases
+confint(lm.fit)
+confint(lm.fit1)
+confint(lm.fit2)
+
+# Narrower confidence interval less variance
+
+# Exercise (14)
+set.seed(1)
+x1 = runif(100)
+x2 = 0.5 * x1 + rnorm(100)/10
+y = 2+ 2* x1 + 0.3 * x2 + rnorm(100)
+# y = 2.5 * x1 + 2 + eps
+cor(x1,x2)
+par(mfrow = c(1,1))
+plot(x1,x2)
+
+lm.fit = lm(y ~ x1 + x2)
+summary(lm.fit)
+# cannot reject beta_2 = 0 high p value
+
+lm.fit1 = lm(y ~ x1)
+summary(lm.fit1)
+library(car)
+vif(lm.fit)
+
+lm.fit2 = lm( y ~ x2)
+summary(lm.fit2)
+
+# 14(f) --> No 
 
