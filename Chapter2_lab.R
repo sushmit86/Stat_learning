@@ -110,4 +110,3 @@ identify(horsepower,mpg,name)
 summary(Auto)
 summary(mpg)
 
-

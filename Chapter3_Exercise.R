@@ -116,10 +116,3 @@ coef(lm.fit2)
 names(lm.fit2)
 
 
-
-
-
-
-
-
-
