@@ -113,6 +113,40 @@ summary(lm.fit2)
 coef(lm.fit2)
 # 11 (c)
 # the t stat are same
+
+# 11(c)  --> numerically
+t_stat = sqrt(99) * sum(x*y)/sqrt(sum(x*x)*sum(y*y) - sum(x*y)^2) # = 18.73
+
 names(lm.fit2)
+
+#11(f)  -> can be shown both have t value = 18.73
+
+# 12(a)  --> When the sum of squares is same
+
+# 12(b)
+set.seed(1)
+x = rnorm(100)
+y = 3*x
+
+lm.fit = lm( y ~ x)
+summary(lm.fit)
+
+lm.fit2 = lm( x ~ y)
+summary(lm.fit2)
+
+# 12 (c)
+set.seed(1)
+x = rbeta(100, shape1 = 1, shape2 = 1) # using beta distribution
+y = -sample(x,100)
+
+lm.fit = lm( x ~ y + 0)
+
+lm.fit2 = lm(y ~ x + 0)
+names(lm.fit)
+coef(lm.fit)
+coef(lm.fit2)
+# we can see they have the same coefficient
+
+# Exerccise 13(a)
 
 
