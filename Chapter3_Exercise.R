@@ -264,7 +264,85 @@ summary(lm.fit2)
 x1 = c( x1 , 0.1)
 x2 = c(x2, 0.8)
 y = c(y,6)
-lm.fit = lm(y ~ x1 + x2)
-summary(lm.fit)
+lm.fit1 = lm(y ~ x1 + x2)
+summary(lm.fit1)
+
+lm.fit2 = lm(y~x1)
+summary(lm.fit2)
+
+lm.fit3 = lm(y~x2)
+summary(lm.fit3)
+
+par(mfrow=c(2,2))
+plot(lm.fit1)
+
+par(mfrow=c(2,2))
+plot(lm.fit2)
 
 
+par(mfrow=c(2,2))
+plot(lm.fit3)
+
+plot(predict(lm.fit1), rstudent(lm.fit1))
+
+plot(predict(lm.fit2), rstudent(lm.fit2))
+
+plot(predict(lm.fit3), rstudent(lm.fit3))
+
+# Exercise 15
+
+library(MASS)
+Boston$chas <- factor(Boston$chas, labels = c("N","Y"))
+View(Boston)
+summary(Boston)
+attach(Boston)
+
+lm.zn = lm(crim~zn)
+summary(lm.zn) # yes
+
+lm.indus = lm(crim~indus)
+summary(lm.indus) # yes
+
+lm.chas = lm(crim~chas) 
+summary(lm.chas) # no
+
+
+lm.nox = lm(crim~nox)
+summary(lm.nox) # yes
+
+lm.rm = lm(crim~rm)
+summary(lm.rm) # yes
+
+lm.age = lm(crim~age)
+summary(lm.age) # yes
+
+lm.dis = lm(crim~dis)
+summary(lm.dis) # yes
+
+lm.rad = lm(crim~rad)
+summary(lm.rad) # yes
+
+lm.tax = lm(crim~tax)
+summary(lm.tax) # yes
+
+lm.ptratio = lm(crim~ptratio)
+summary(lm.ptratio) # yes
+
+
+lm.black = lm(crim~black)
+summary(lm.black) # yes
+
+lm.lstat = lm(crim~lstat)
+summary(lm.lstat) # yes
+
+
+lm.medv = lm(crim~medv)
+summary(lm.medv) # yes
+
+
+# 15 (b)
+
+lm.all = lm(crim~., data=Boston)
+summary(lm.all)
+
+zn,dis,rad,blck,medv
