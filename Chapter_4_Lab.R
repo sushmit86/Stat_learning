@@ -14,3 +14,10 @@ summary(glm_fit)$coef
 contrasts(Direction)
 glm_probs = predict(glm_fit, type = "response")
 glm_probs[1:10]
+glm_pred = rep("Down", 1250)
+glm_pred[glm_probs > 0.5] = "Up"
+addmargins(table(glm_pred, Direction))
+mean(glm_pred == Direction)
+train = (Year < 2005)
+Smarket_2005 = Smarket[!train,]
+dim(Smarket_2005)
