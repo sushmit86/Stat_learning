@@ -21,3 +21,20 @@ mean(glm_pred == Direction)
 train = (Year < 2005)
 Smarket_2005 = Smarket[!train,]
 dim(Smarket_2005)
+Direction_2005 = Direction[!train]
+glm_fit = glm(Direction ~ Lag1 + Lag2 + Lag3 + 
+                Lag4 + Lag5 + Volume, data = Smarket, family = binomial, subset = train)
+glm_probs = predict(glm_fit, Smarket_2005,type = "response")
+glm_pred = rep("Down",252)
+glm_pred[glm_probs > 0.5] = "Up"
+table(glm_pred, Direction_2005)
+mean(glm_pred == Direction_2005)
+mean(glm_pred != Direction_2005)
+glm_fit = glm(Direction ~ Lag1 + Lag2 , data = Smarket, family = binomial, subset = train)
+glm_probs = predict(glm_fit, Smarket_2005,type = "response")
+glm_pred = rep("Down",252)
+glm_pred[glm_probs > 0.5] = "Up"
+table(glm_pred, Direction_2005)
+mean(glm_pred == Direction_2005)
+mean(glm_pred != Direction_2005)
+# 106/(106+ 76)
