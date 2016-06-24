@@ -1,5 +1,6 @@
 library(ISLR)
 library(MASS)
+library(class)
 names(Smarket)
 head(Smarket)
 dim(Smarket)
@@ -57,3 +58,54 @@ sum(lda_pred$posterior[,1] < 0.5)
 lda_pred$posterior[1:20,1]
 lda_class[1:20]
 ## QDA
+qda_fit = qda(Direction ~ Lag1 + Lag2 , data = Smarket , subset = train)
+qda_fit
+qda_predict = predict(qda_fit, Smarket_2005)
+names(qda_predict)
+table(qda_predict$class, Direction_2005)
+mean(qda_predict$class== Direction_2005)
+qda_predict$class[1:10]
+qda_predict$posterior[1:10]
+# Applying KNN
+train.X = cbind(Lag1, Lag2)[train,]
+test.X = cbind(Lag1,Lag2)[!train,]
+train.Direction = Direction[train]
+set.seed(1)
+knn.pred = knn(train.X,test.X,train.Direction, k=1)
+table(knn.pred, Direction_2005)
+knn.pred = knn(train.X,test.X,train.Direction, k=3)
+table(knn.pred, Direction_2005)
+# Caravan Insurance Policy
+dim(Caravan)
+head(Caravan)
+attach(Caravan)
+summary(Purchase)
+standardized.X = scale(Caravan[, -86])
+var(Caravan[,1])
+var(Caravan[,2])
+var(standardized.X[,1])
+var(standardized.X[,2])
+test = 1:1000
+train.X = standardized.X[-test,]
+test.X = standardized.X[test,]
+train.Y = Purchase[-test]
+test.Y = Purchase[test]
+set.seed(1)
+knn.pred = knn(train.X, test.X, train.Y, k=1)
+mean(test.Y != knn.pred)
+mean(test.Y != "No")
+table(knn.pred,test.Y)
+set.seed(1)
+knn.pred = knn(train.X, test.X, train.Y, k=3)
+table(knn.pred,test.Y)
+knn.pred = knn(train.X, test.X, train.Y, k=5)
+table(knn.pred,test.Y)
+glm_fit = glm(Purchase ~. ,data = Caravan, family= binomial, subset = -test)
+glm_probs = predict(glm_fit, Caravan[test,], type = "response")
+glm_pred = rep("No",1000)
+glm_pred[glm_probs > 0.5] = "Yes"
+table(glm_pred, test.Y)
+
+glm_pred = rep("No",1000)
+glm_pred[glm_probs > 0.25] = "Yes"
+table(glm_pred, test.Y)
