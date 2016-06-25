@@ -37,6 +37,10 @@ plot(predict(lm.fit), rstudent(lm.fit))
 plot(hatvalues(lm.fit))
 which.max(hatvalues(lm.fit))
 
+confint(lm.fit)
+
+confint(lm.fit1)
+
 # Multiple Linear Regression
 
 lm.fit=lm(medv~lstat+age,data=Boston)
