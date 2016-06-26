@@ -155,6 +155,35 @@ glm.pred[glm.probs > 0.5] = 1
 table(glm.pred, mpg01.test)
 mean(glm.pred != mpg01.test)
 # test error = 12.08%
+# 11 (g) -- Perform KNN
+
+# KNN = 1
+train.X = cbind(cylinders, weight, displacement, horsepower)[train, ]
+test.X = cbind(cylinders, weight, displacement, horsepower)[!train, ]
+train.mpg01 = mpg01[train]
+set.seed(1)
+pred.knn = knn(train.X, test.X, train.mpg01, k = 1)
+table(pred.knn, mpg01.test)
+mean(pred.knn != mpg01.test)
+
+# KNN = 10
+train.X = cbind(cylinders, weight, displacement, horsepower)[train, ]
+test.X = cbind(cylinders, weight, displacement, horsepower)[!train, ]
+train.mpg01 = mpg01[train]
+pred.knn = knn(train.X, test.X, train.mpg01, k = 10)
+table(pred.knn, mpg01.test)
+mean(pred.knn != mpg01.test)
+
+# KNN = 100
+train.X = cbind(cylinders, weight, displacement, horsepower)[train, ]
+test.X = cbind(cylinders, weight, displacement, horsepower)[!train, ]
+train.mpg01 = mpg01[train]
+pred.knn = knn(train.X, test.X, train.mpg01, k = 100)
+table(pred.knn, mpg01.test)
+mean(pred.knn != mpg01.test)
+# Test error = 14.2 %
+# Exercise 12
+
 
 
 
