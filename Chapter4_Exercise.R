@@ -182,7 +182,33 @@ pred.knn = knn(train.X, test.X, train.mpg01, k = 100)
 table(pred.knn, mpg01.test)
 mean(pred.knn != mpg01.test)
 # Test error = 14.2 %
-# Exercise 12
+# Exercise 12(a)
+Power = function(){
+  return(2^3)
+}
+#Exercise 12(b)
+Power2 = function(x,a){
+  return(x^a)
+}
+# 12(d)
+Power3 = function(x,a) {
+  result = x^a
+  return(result)
+}
+# 12(e)
+x = 1:10
+par(mfrow=c(2,2))
+plot(x, Power3(x,2), xlab = 'x', ylab = 'x^2')
+plot(log(x), log(Power3(x,2)), xlab = 'log(x)', ylab = 'log(x^2)')
+plot(x, log(Power3(x,2)), xlab = 'x', ylab = 'log(x^2)')
+plot(log(x), Power3(x,2), xlab = 'x', ylab = 'log(x^2)')
+
+PlotPower = function(x,a){
+  plot(x, Power3(x,a))
+}
+PlotPower(1:10,3)
+
+
 
 
 

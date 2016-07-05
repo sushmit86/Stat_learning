@@ -345,4 +345,3 @@ summary(lm.medv) # yes
 lm.all = lm(crim~., data=Boston)
 summary(lm.all)
 
-zn,dis,rad,blck,medv
