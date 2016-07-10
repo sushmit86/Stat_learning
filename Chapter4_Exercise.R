@@ -207,10 +207,70 @@ PlotPower = function(x,a){
   plot(x, Power3(x,a))
 }
 PlotPower(1:10,3)
+attach(Boston)
+
+View(Boston)
+head(Boston)
+crime01 = rep(0, length(crim))
+crime01[crim > median(crim)] = 1
+Boston = data.frame(Boston, crime01)
+test = (dim(Boston)[1]/2 + 1):dim(Boston)[1]
+Boston.train = Boston[train, ]
+Boston.test = Boston[test, ]
+crime01.test = crime01[test]
+
+# logistic regression
+glm.fit = glm(crime01 ~ . - crime01 - crim, data = Boston, family = binomial, 
+              subset = train)
+
+summary(glm.fit)
 
 
+glm.probs = predict(glm.fit, Boston.test, type = "response")
+glm.pred = rep(0, length(glm.probs))
+glm.pred[glm.probs > 0.5] = 1
+mean(glm.pred != crime01.test)
+
+# LDA
+lda.fit = lda(crime01 ~ . - crime01 - crim, data = Boston, subset = train)
+lda.pred = predict(lda.fit, Boston.test)
+mean(lda.pred$class != crime01.test)
 
 
+lda.fit = lda(crime01 ~ . - crime01 - crim - chas - tax, data = Boston, subset = train)
+lda.pred = predict(lda.fit, Boston.test)
+mean(lda.pred$class != crime01.test)
+
+lda.fit = lda(crime01 ~ . - crime01 - crim - chas - tax - lstat - indus - age, 
+              data = Boston, subset = train)
+lda.pred = predict(lda.fit, Boston.test)
+mean(lda.pred$class != crime01.test)
+
+# KNN
+library(class)
+train.X = cbind(zn, indus, chas, nox, rm, age, dis, rad, tax, ptratio, black, 
+                lstat, medv)[train, ]
+test.X = cbind(zn, indus, chas, nox, rm, age, dis, rad, tax, ptratio, black, 
+               lstat, medv)[test, ]
+train.crime01 = crime01[train]
+set.seed(1)
+# KNN(k=1)
+knn.pred = knn(train.X, test.X, train.crime01, k = 1)
+mean(knn.pred != crime01.test)
+
+# KNN(k=10)
+knn.pred = knn(train.X, test.X, train.crime01, k = 10)
+mean(knn.pred != crime01.test)
+
+# KNN(k=100)
+knn.pred = knn(train.X, test.X, train.crime01, k = 100)
+mean(knn.pred != crime01.test)
+
+# KNN(k=10) with subset of variables
+train.X = cbind(zn, nox, rm, dis, rad, ptratio, black, medv)[train, ]
+test.X = cbind(zn, nox, rm, dis, rad, ptratio, black, medv)[test, ]
+knn.pred = knn(train.X, test.X, train.crime01, k = 10)
+mean(knn.pred != crime01.test)
 
 
 
