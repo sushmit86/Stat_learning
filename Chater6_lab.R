@@ -1,6 +1,7 @@
 library(ISLR)
 library(leaps)
 attach(Hitters)
+library(glmnet)
 names(Hitters)
 dim(Hitters)
 sum(is.na(Hitters$Salary))
@@ -57,3 +58,26 @@ coefi = coef(object, id =id)
 xvars = names(coefi)
 mat[,xvars]%*%coefi
 }
+regfit.best = regsubsets(Salary~., data = Hitters, nvmax = 19)
+coef(regfit.best, 10)
+k =10
+set.seed(1)
+folds = sample(1:k, nrow(Hitters), replace = TRUE)
+cv.errors = matrix(NA, k,19, dimnames = list(NULL,paste(1:19)))
+for (j in 1:k){
+  best.fit = regsubsets(Salary ~., data = Hitters[folds!= j, ], nvmax = 19 )
+  for( i in 1:19){
+    pred = predict(best.fit, Hitters[folds == j,],id = i)
+    cv.errors[j,i] = mean((Hitters$Salary[folds ==j] - pred)^2)
+  }
+}
+mean.cv.errors = apply(cv.errors,2,mean)
+mean.cv.errors
+par(mfrow = c(1,1))
+plot(mean.cv.errors,type = 'b')
+reg.best = regsubsets(Salary ~., data = Hitters, nvmax = 19)
+coef(reg.best,11)
+x = model.matrix(Salary~., Hitters)[,-1]
+y = Hitters$Salary
+grid = 10^ seq(10,-2, length = 100)
+ridge.mod = glmnet(x,y ,alpha = 0, lambda = grid)
