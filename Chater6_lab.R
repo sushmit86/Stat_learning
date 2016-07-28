@@ -81,3 +81,8 @@ x = model.matrix(Salary~., Hitters)[,-1]
 y = Hitters$Salary
 grid = 10^ seq(10,-2, length = 100)
 ridge.mod = glmnet(x,y ,alpha = 0, lambda = grid)
+dim(coef(ridge.mod))
+ridge.mod$lambda[50]
+coef(ridge.mod)[,50]
+ridge.mod$lambda[60]
+coef(ridge.mod)[,60]
