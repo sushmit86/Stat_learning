@@ -2,6 +2,7 @@ library(ISLR)
 library(leaps)
 attach(Hitters)
 library(glmnet)
+library(pls)
 names(Hitters)
 dim(Hitters)
 sum(is.na(Hitters$Salary))
@@ -106,3 +107,46 @@ predict(ridge.mod, s= 0,exact = T, type ="coefficients")[1:20, ]
 set.seed(1)
 cv.out = cv.glmnet(x[train,], y[train], alpha = 0)
 plot(cv.out)
+bestlam = cv.out$lambda.min
+print(bestlam)
+ridge.pred = predict(ridge.mod, s= bestlam, newx = x[test, ])
+mean((ridge.pred - y.test)^2)
+out = glmnet(x,y ,alpha = 0)
+predict(out, type= "coefficients", s= bestlam)[1:20,]
+# Lasso
+lasso.mod = glmnet( x[train,], y[train], alpha = 1, lambda = grid)
+plot(lasso.mod)
+set.seed(1)
+cv.out = cv.glmnet(x[train,], y[train], alpha = 1)
+plot(cv.out)
+bestlam = cv.out$lambda.min
+lasso.pred = predict(lasso.mod, s= bestlam, newx = x[test,])
+mean((lasso.pred - y.test)^2)
+out = glmnet(x,y, alpha = 1, lambda = grid)
+lasso.coef = predict(out, type ="coefficients", s= bestlam)[1:20, ]
+lasso.coef     
+# Partial Component Regression
+set.seed(2)
+pcr.fit = pcr(Salary ~., data = Hitters, scale= TRUE, validation = "CV")
+summary(pcr.fit)
+# Partial Least square
+set.seed(1)
+pls.fit = plsr(Salary~., data = Hitters, subset = train, scale= TRUE, validation = "CV")
+summary(pls.fit)
+validationplot(pcr.fit,val.type = "MSEP")
+set.seed(1)
+pcr.fit = pcr(Salary~., data = Hitters, subset = train, scale = TRUE, validation = "CV")
+validationplot(pcr.fit, val.type = "MSEP")
+pcr.pred = predict(pcr.fit, x[test,], ncomp = 7)
+mean((pcr.pred - y.test)^2)
+pcr.fit = pcr( y ~ x , scale= TRUE, ncomp = 7)
+summary(pcr.fit)
+set.seed(1)
+pls.fit = plsr( Salary ~., data = Hitters, subset = train, scale = TRUE,
+                validation = "CV")
+summary(pls.fit)
+validationplot(pls.fit, val.type = "MSEP")
+pls.pred = predict(pls.fit, x[test,] ,ncomp = 2)
+mean((pls.pred - y.test)^2)
+pls.fit = plsr(Salary ~., data = Hitters, scale = TRUE,ncomp = 2)
+
