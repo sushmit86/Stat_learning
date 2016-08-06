@@ -4,6 +4,7 @@ attach(Hitters)
 library(glmnet)
 library(pls)
 library(leaps)
+library(MASS)
 # Exercise 6
 # (y- beta)^2 + lambda (beta)^2
 y = 2
@@ -190,14 +191,65 @@ for (i in 1:p) {
 }
 
 
+plot(val.errors, ylab = "Training MSE", pch = 19, type = "b")
+
+val.errors = rep(NA, p)
+for (i in 1:p) {
+  coefi = coef(regfit.full, id = i)
+  pred = as.matrix(x.test[, x_cols %in% names(coefi)]) %*% coefi[names(coefi) %in% 
+                                                                   x_cols]
+  val.errors[i] = mean((y.test - pred)^2)
+}
+plot(val.errors, ylab = "Test MSE", pch = 19, type = "b")
+val.errors = rep(NA, p)
+for (i in 1:p) {
+  coefi = coef(regfit.full, id = i)
+  pred = as.matrix(x.test[, x_cols %in% names(coefi)]) %*% coefi[names(coefi) %in% 
+                                                                   x_cols]
+  val.errors[i] = mean((y.test - pred)^2)
+}
+plot(val.errors, ylab = "Test MSE", pch = 19, type = "b")
+
+which.min(val.errors)
+coef(regfit.full, id = 16)
 
 
+val.errors = rep(NA, p)
+a = rep(NA, p)
+b = rep(NA, p)
+for (i in 1:p) {
+  coefi = coef(regfit.full, id = i)
+  a[i] = length(coefi) - 1
+  b[i] = sqrt(sum((B[x_cols %in% names(coefi)] - coefi[names(coefi) %in% x_cols])^2) + 
+                sum(B[!(x_cols %in% names(coefi))])^2)
+}
 
+plot(x = a, y = b, xlab = "number of coefficients", ylab = "error between estimated and true coefficients")
 
+which.min(b)
+# Exercise 11
+set.seed(1)
 
+predict.regsubsets = function(object, newdata, id, ...) {
+  form = as.formula(object$call[[2]])
+  mat = model.matrix(form, newdata)
+  coefi = coef(object, id = id)
+  mat[, names(coefi)] %*% coefi
+}
+k = 10
+p = ncol(Boston) - 1
+folds = sample(rep(1:k, length = nrow(Boston)))
+cv.errors = matrix(NA, k, p)
+for (i in 1:k) {
+  best.fit = regsubsets(crim ~ ., data = Boston[folds != i, ], nvmax = p)
+  for (j in 1:p) {
+    pred = predict(best.fit, Boston[folds == i, ], id = j)
+    cv.errors[i, j] = mean((Boston$crim[folds == i] - pred)^2)
+  }
+}
 
-
-
+rmse.cv = sqrt(apply(cv.errors, 2, mean))
+plot(rmse.cv, pch = 19, type = "b")
 
 
 
