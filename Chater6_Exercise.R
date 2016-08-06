@@ -172,8 +172,22 @@ B[19] = 0
 B[10] = 0
 eps = rnorm(p)
 y = x %*% B + eps
+train = sample(seq(1000), 100, replace = FALSE)
+y.train = y[train, ]
+y.test = y[-train, ]
+x.train = x[train, ]
+x.test = x[-train, ]
 
+regfit.full = regsubsets(y ~ ., data = data.frame(x = x.train, y = y.train), nvmax = p)
+val.errors = rep(NA, p)
+x_cols = colnames(x, do.NULL = FALSE, prefix = "x.")
 
+# See lab for easy implementation
+for (i in 1:p) {
+  coefi = coef(regfit.full, id = i)
+  pred = as.matrix(x.train[, x_cols %in% names(coefi)]) %*% coefi[names(coefi) %in% x_cols]
+  val.errors[i] = mean((y.train - pred)^2)
+}
 
 
 
