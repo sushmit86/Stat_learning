@@ -250,6 +250,28 @@ for (i in 1:k) {
 
 rmse.cv = sqrt(apply(cv.errors, 2, mean))
 plot(rmse.cv, pch = 19, type = "b")
+which.min(rmse.cv)
+rmse.cv[which.min(rmse.cv)]
+
+
+x = model.matrix(crim ~ . - 1, data = Boston)
+y = Boston$crim
+cv.lasso = cv.glmnet(x, y)
+plot(cv.lasso)
+coef(cv.lasso)
+sqrt(cv.lasso$cvm[cv.lasso$lambda == cv.lasso$lambda.1se])
+
+x = model.matrix(crim ~ . - 1, data = Boston)
+y = Boston$crim
+cv.ridge = cv.glmnet(x, y, type.measure = "mse", alpha = 0)
+plot(cv.ridge)
+coef(cv.ridge)
+sqrt(cv.ridge$cvm[cv.ridge$lambda == cv.ridge$lambda.1se])
+
+pcr.fit = pcr(crim ~ ., data = Boston, scale = TRUE, validation = "CV")
+summary(pcr.fit)
+
+
 
 
 
