@@ -1,0 +1,16 @@
+library(ISLR)
+attach(Wage)
+
+#########
+fit = lm(wage~poly(age,4), data = Wage)
+coef(summary(fit))
+fit2 = lm(wage~poly(age,4, raw = T), data = Wage)
+coef(summary(fit2))
+fit2a = lm(wage ~ age + I(age^2) + I(age^3) + I(age^4), data= Wage)
+coef(summary(fit2a))
+fit2b = lm(wage~age + I(age ^2) + I(age ^3) + I(age ^4), data = Wage)
+coef(summary(fit2b))
+agelims = range(age)
+age.grid = seq(from = agelims[1], to = agelims[2])
+preds = predict(fit, newdata = list(age=age.grid), se = TRUE )
+se.bands = cbind(pred$fit + 2*preds$se.fit,pred$fit - 2*preds$se.fit )
